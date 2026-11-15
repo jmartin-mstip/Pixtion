@@ -1,0 +1,16 @@
+{
+  "name": "pixtion",
+  "version": "1.0.0",
+  "description": "A pixel-art animation studio that runs in the browser.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "sw": "node scripts/build.mjs",
+    "build": "node scripts/obfuscate.mjs",
+    "serve": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "javascript-obfuscator": "^4.1.0"
+  }
+}

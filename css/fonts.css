@@ -1,0 +1,9 @@
+/* PIXTION · fonts.css — self-hosted typefaces (SIL Open Font License 1.1, see assets/fonts/).
+   Served from our own domain, so the Content-Security-Policy can stay 'self' only. */
+@font-face{font-family:"Space Mono";font-style:normal;font-weight:400;font-display:swap;src:url("../assets/fonts/space-mono-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Space Mono";font-style:normal;font-weight:700;font-display:swap;src:url("../assets/fonts/space-mono-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-style:normal;font-weight:400;font-display:swap;src:url("../assets/fonts/work-sans-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-style:normal;font-weight:500;font-display:swap;src:url("../assets/fonts/work-sans-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-style:normal;font-weight:600;font-display:swap;src:url("../assets/fonts/work-sans-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-style:normal;font-weight:700;font-display:swap;src:url("../assets/fonts/work-sans-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-style:normal;font-weight:800;font-display:swap;src:url("../assets/fonts/work-sans-latin-800-normal.woff2") format("woff2")}

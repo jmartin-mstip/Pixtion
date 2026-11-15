@@ -1,0 +1,16 @@
+/* PIXTION · templates.css — Template cards and details lists. */
+/* Templates & details */
+.tgroup{margin-top:30px}
+.tgroup > .row{margin-bottom:14px}
+.gcard .desc{font-size:13px;color:var(--muted);line-height:1.4}
+.blanks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.blanks .btn{min-height:60px}
+.details{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:14px;margin:0;border-top:2px dashed var(--gridline);padding-top:10px}
+.details dt{font-family:var(--f-mono);font-size:11px;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.details dd{margin:0;overflow-wrap:anywhere}
+.btn.sm{min-height:46px;font-size:12px;padding:6px 8px}
+textarea.input{min-height:84px;resize:vertical;line-height:1.4;padding-top:12px}
+.swatchrow{display:flex;flex-wrap:wrap;gap:4px}
+.blanks{grid-template-columns:repeat(4,minmax(0,1fr))}
+.blanks .btn,.grid4 .btn{min-width:0;font-size:12px;padding:6px 2px;letter-spacing:-.02em}
+.swatchrow i{width:14px;height:14px;border:1.5px solid var(--ink);display:inline-block}

@@ -1,0 +1,18 @@
+/* PIXTION · utilities.css — small one-purpose helpers (replace inline style attributes so the
+   Content-Security-Policy can forbid inline styles). Marked !important on purpose: they used to be inline. */
+.u-fs13{font-size:13px!important}.u-fs14{font-size:14px!important}.u-fs15{font-size:15px!important}.u-fs20{font-size:20px!important}
+.u-lead17{font-size:17px!important;line-height:1.7!important}
+.u-mt0{margin-top:0!important}.u-mt8{margin-top:8px!important}.u-mt14{margin-top:14px!important}.u-mt22{margin-top:22px!important}
+.u-mb6{margin-bottom:6px!important}.u-mb10{margin-bottom:10px!important}.u-mb18{margin-bottom:18px!important}.u-mb20{margin-bottom:20px!important}
+.u-h54{min-height:54px!important}.u-h62{min-height:62px!important}.u-h70{min-height:70px!important}
+.u-gap6{gap:6px!important}.u-gap10{gap:10px!important}
+.u-tt-none{text-transform:none!important}.u-label-upper{font-weight:700!important;text-transform:uppercase!important}
+.u-wrap-any{overflow-wrap:anywhere!important}.u-nowrap{flex-wrap:nowrap!important}.u-ai-start{align-items:flex-start!important}
+.u-js-start{justify-self:start!important}.u-maxw100{max-width:100%!important}
+.btn-xl{min-height:72px!important;padding:0 18px!important;font-size:16px!important}
+.btn-card{min-height:44px!important;font-size:13px!important}
+.card-loading{border-width:2px!important;display:grid!important;place-items:center!important}
+.swatchrow i{background:var(--sw,#fff)}
+.install-btn{position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:70;font:700 13px var(--f-mono);
+  background:var(--orange);color:var(--ink);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:10px 14px;cursor:pointer;border-radius:0}
+.noscript-box{max-width:640px;margin:40px auto;padding:0 16px;font-family:system-ui,sans-serif;line-height:1.5}

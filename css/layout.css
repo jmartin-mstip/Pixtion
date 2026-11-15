@@ -1,0 +1,24 @@
+/* PIXTION · layout.css — Responsive layout: one column on phones, two on wide screens. */
+/* Studio layout: one column on phones (flex + order), two columns from 980px. */
+.studio-grid{display:flex;flex-direction:column}
+.col-a,.col-b{display:contents}
+[data-o=board]{order:1}[data-o=hint]{order:2}[data-o=zoom]{order:3}[data-o=preview]{order:4}[data-o=save]{order:5}
+[data-o=tools]{order:6}[data-o=transform]{order:7}[data-o=size]{order:8}[data-o=palette]{order:9}[data-o=strip]{order:10}
+.ctlrow{display:grid;gap:8px}
+.card,.boardcard{max-width:100%}
+.screen{max-width:680px;margin-inline:auto}
+@media (min-width:980px){
+  .wrap{max-width:1240px}
+  #v-main > header{max-width:none}
+  .studio-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0 40px;align-items:start}
+  .col-a,.col-b{display:flex;flex-direction:column;min-width:0}
+  .col-a{position:sticky;top:16px}
+  .col-a .boardcard{width:min(100%,calc(100vh - 190px));align-self:center}
+  .col-b > :first-child{margin-top:0}
+  [data-o=tools]{order:1}[data-o=palette]{order:2}[data-o=strip]{order:3}[data-o=preview]{order:4}[data-o=save]{order:5}[data-o=transform]{order:6}[data-o=size]{order:7}
+  .pv{max-width:420px;margin-inline:auto}
+}
+@media (min-width:680px) and (max-width:979px){ .wrap{max-width:760px} }
+@media (max-width:520px){ .tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px} .seg.zoomseg{grid-auto-flow:row;grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:400px){ html .grid4, html .blanks{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.tab{white-space:nowrap;min-width:0}
