@@ -104,7 +104,7 @@ const appSri = sri(appObf), guardSri = sri(guardObf);
 
 // assets ship as-is. There are NO .css files in dist: the CSS lives inside the obfuscated bundle.
 cpSync(join(ROOT, 'assets'), join(DIST, 'assets'), { recursive: true });
-for (const f of ['robots.txt', 'sitemap.xml']) cpSync(join(ROOT, f), join(DIST, f));
+for (const f of ['robots.txt', 'sitemap.xml', 'google0bb2d1f00543730e.html']) cpSync(join(ROOT, f), join(DIST, f));
 cpSync(join(ROOT, 'site.webmanifest'), join(DIST, 'site.webmanifest'));
 // Security headers live in the ROOT vercel.json (Vercel reads them from there, not from dist/).
 
@@ -129,7 +129,7 @@ ${head}
 writeFileSync(join(DIST, 'index.html'), shell);
 
 /* ---------- regenerate the service worker for dist ---------- */
-const SKIP = new Set([SW_FILE, 'robots.txt', 'sitemap.xml']);
+const SKIP = new Set([SW_FILE, 'robots.txt', 'sitemap.xml', 'google0bb2d1f00543730e.html']);
 const walk = dir => readdirSync(dir).flatMap(n => {
   const full = join(dir, n), rel = relative(DIST, full).split(sep).join('/');
   if (statSync(full).isDirectory()) return walk(full);
