@@ -53,7 +53,6 @@ const markup = body
 const cssOrder = [...srcHtml.matchAll(/href="css\/([^"]+)"/g)].map(m => m[1]);
 const css = cssOrder.map(f => readFileSync(join(ROOT, 'css', f), 'utf8')).join('\n')
   .replace(/url\((['"]?)\.\.\/assets\//g, 'url($1/assets/');   // resolve font paths from the page root
-const cssSri = sri(css);
 
 /* ---------- 2. bundle + obfuscate the app ---------- */
 const bundled = await build({
@@ -61,11 +60,27 @@ const bundled = await build({
   bundle: true, format: 'iife', platform: 'browser', target: 'es2019',
   minify: true, write: false, legalComments: 'none'
 });
-// Prelude (runs first): inject the stylesheet, then the markup, then the app boots.
-const inject = `(function(){` +
-  `var st=document.createElement("style");st.textContent=${JSON.stringify(css)};document.head.appendChild(st);` +
-  `var s=document.getElementById("seo");if(s)s.remove();` +
-  `document.body.insertAdjacentHTML("afterbegin",${JSON.stringify(markup)});})();\n`;
+// Prelude (runs first): applies the stylesheet, then injects the markup, then the app boots.
+// Uses a constructable stylesheet, which a strict CSP (style-src 'self') allows without any hash,
+// so the CSS can change freely between builds. Older browsers fall back to a same-origin blob: link.
+function prelude(css, markup) {
+  try {
+    if (!('adoptedStyleSheets' in document)) throw new Error('no constructable stylesheets');
+    var sheet = new CSSStyleSheet();
+    sheet.replaceSync(css);
+    document.adoptedStyleSheets = Array.from(document.adoptedStyleSheets || []).concat([sheet]);
+  } catch (e) {
+    var abs = css.replace(/url\((['"]?)\//g, 'url($1' + location.origin + '/');
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = URL.createObjectURL(new Blob([abs], { type: 'text/css' }));
+    document.head.appendChild(link);
+  }
+  var seo = document.getElementById('seo');
+  if (seo) seo.remove();
+  document.body.insertAdjacentHTML('afterbegin', markup);
+}
+const inject = `(${prelude.toString()})(${JSON.stringify(css)},${JSON.stringify(markup)});\n`;
 const appObf = JsObfuscator.obfuscate(inject + bundled.outputFiles[0].text, OBFUSCATE).getObfuscatedCode();
 
 // Random-looking content-hash filenames (asset fingerprinting; also busts caches on update).
@@ -91,10 +106,7 @@ const appSri = sri(appObf), guardSri = sri(guardObf);
 cpSync(join(ROOT, 'assets'), join(DIST, 'assets'), { recursive: true });
 for (const f of ['robots.txt', 'sitemap.xml']) cpSync(join(ROOT, f), join(DIST, f));
 cpSync(join(ROOT, 'site.webmanifest'), join(DIST, 'site.webmanifest'));
-// dist headers: rename the worker, and allow exactly our one injected stylesheet by its hash.
-writeFileSync(join(DIST, 'vercel.json'), readFileSync(join(ROOT, 'vercel.json'), 'utf8')
-  .replaceAll('/sw.js', '/' + SW_FILE)
-  .replace("style-src 'self'", "style-src 'self' '" + cssSri + "'"));
+// Security headers live in the ROOT vercel.json (Vercel reads them from there, not from dist/).
 
 /* ---------- the shell index.html (what view-source shows) ---------- */
 let head = srcHtml.slice(srcHtml.indexOf('<head>'), srcHtml.indexOf('</head>') + 7)
@@ -117,7 +129,7 @@ ${head}
 writeFileSync(join(DIST, 'index.html'), shell);
 
 /* ---------- regenerate the service worker for dist ---------- */
-const SKIP = new Set([SW_FILE, 'vercel.json', 'robots.txt', 'sitemap.xml']);
+const SKIP = new Set([SW_FILE, 'robots.txt', 'sitemap.xml']);
 const walk = dir => readdirSync(dir).flatMap(n => {
   const full = join(dir, n), rel = relative(DIST, full).split(sep).join('/');
   if (statSync(full).isDirectory()) return walk(full);

@@ -118,20 +118,24 @@ npm run build          # creates dist/
 
 Rebuild `dist/` after any change to the source, then redeploy it.
 
-## Deploy to Vercel
+## Deploy to Vercel (from GitHub)
 
-```
-npm i -g vercel
-cd dist           # deploy the protected build
-vercel            # first time: log in, framework "Other", accept defaults
-vercel --prod
-```
+1. Push this folder to GitHub (it is fine to leave `dist/` and `node_modules/` out).
+2. In Vercel, import the repository. `vercel.json` already tells Vercel everything:
+   - install: `npm install`
+   - build: `npm run build` (creates the protected `dist/`)
+   - output: `dist`
+   - security headers for every page
+3. Every new commit redeploys automatically. You never have to build by hand.
 
 Name the project `pixtion` so the address is `pixtion.vercel.app` (the address written in
 `index.html`, `robots.txt` and `sitemap.xml`). If you use another address, replace
 `pixtion.vercel.app` in those three files.
 
-Do not add a `routes` key to `vercel.json`: it silently turns off all the security headers.
+Notes:
+- Keep `scripts/` in the repository. Vercel needs `scripts/obfuscate.mjs` to build.
+- Do not add a `routes` key to `vercel.json`: it silently turns off all the security headers.
+- The npm warning about esbuild "install scripts" is harmless; the build works without them.
 
 ## Security
 
