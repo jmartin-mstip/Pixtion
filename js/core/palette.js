@@ -13,3 +13,19 @@ export const NAMES = [null,'Ink','Slate','Steel','Fog','Cream','Cherry','Coral',
  'Periwinkle','Indigo','Grape','Lilac','Blush','Cocoa','Caramel','Sand','White',
  'Porcelain','Peach','Honey','Umber','Espresso','Lime','Neon pink','Electric','Aqua','Maroon',
  'Rust','Olive','Navy','Plum','Mist','Rose','Gold','Black'];
+
+/* Custom colours. Frames store colour numbers 0–63 and the GIF palette holds 64 colours. The built-in
+   colours use 1–47, so numbers 48–63 hold up to 16 colours the artist picks, saved with each artwork. */
+export const CUSTOM_START = PAL.length;          // 48
+export const CUSTOM_MAX = 64 - PAL.length;       // 16
+export const HEX = /^#[0-9a-f]{6}$/i;
+
+/** Built-in colours followed by this artwork's custom colours (64 entries, index 0 = empty). */
+export function fullPalette(custom){
+  const p = PAL.slice();
+  for (let i = 0; i < CUSTOM_MAX; i++){ const c = custom && custom[i]; p.push(typeof c === 'string' && HEX.test(c) ? c.toLowerCase() : null); }
+  return p;
+}
+
+/** A friendly name for any colour number. */
+export function colorName(v){ return v >= CUSTOM_START ? `Custom ${v - CUSTOM_START + 1}` : NAMES[v]; }

@@ -12,22 +12,23 @@
 <meta name="application-name" content="PIXTION">
 <meta name="theme-color" content="#1f2a37">
 <meta name="color-scheme" content="light">
-<link rel="canonical" href="https://pixtion.vercel.app/">
-<!-- Google Search Console: paste the <meta name="google-site-verification" ...> tag on the next line -->
+<link rel="canonical" href="https://pixtionph.vercel.app/">
+<!-- Google Search Console ownership check -->
+<meta name="google-site-verification" content="ekH44oiwMy9yprPFn6DkopC4qlU7coYiv7NFj0j7DRw">
 
 <!-- Sharing previews (Messenger, Facebook, X) -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="PIXTION">
 <meta property="og:title" content="PIXTION – Free Pixel Art Animation Maker">
 <meta property="og:description" content="PIXTION is a free pixel art animation maker you can use in your browser. Draw on grids from 8x8 to 512x512, animate frame by frame, start from 86 templates, and download your art as a GIF, video or PNG.">
-<meta property="og:url" content="https://pixtion.vercel.app/">
-<meta property="og:image" content="https://pixtion.vercel.app/assets/og-image.png">
+<meta property="og:url" content="https://pixtionph.vercel.app/">
+<meta property="og:image" content="https://pixtionph.vercel.app/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="PIXTION – Free Pixel Art Animation Maker">
 <meta name="twitter:description" content="PIXTION is a free pixel art animation maker you can use in your browser. Draw on grids from 8x8 to 512x512, animate frame by frame, start from 86 templates, and download your art as a GIF, video or PNG.">
-<meta name="twitter:image" content="https://pixtion.vercel.app/assets/og-image.png">
+<meta name="twitter:image" content="https://pixtionph.vercel.app/assets/og-image.png">
 
 <!-- App icons and installable web app -->
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
@@ -57,9 +58,9 @@
 <!-- Search engines: structured data (data only, not executed) -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebApplication","name":"PIXTION",
-"alternateName":["Pixtion","PIXTION Pixel Art Animation Maker"],"url":"https://pixtion.vercel.app/",
+"alternateName":["Pixtion","PIXTION Pixel Art Animation Maker"],"url":"https://pixtionph.vercel.app/",
 "description":"PIXTION is a free pixel art animation maker you can use in your browser. Draw on grids from 8x8 to 512x512, animate frame by frame, start from 86 templates, and download your art as a GIF, video or PNG.","applicationCategory":"DesignApplication","operatingSystem":"Any (web browser)",
-"browserRequirements":"Requires JavaScript","inLanguage":"en","image":"https://pixtion.vercel.app/assets/og-image.png",
+"browserRequirements":"Requires JavaScript","inLanguage":"en","image":"https://pixtionph.vercel.app/assets/og-image.png",
 "offers":{"@type":"Offer","price":"0","priceCurrency":"PHP"}}
 </script>
 </head>
@@ -138,8 +139,8 @@
         <dt>Extras</dt><dd>Turn a picture into pixel art, flip and move frames, gallery search and sort, backup and restore</dd>
         <dt>Animation</dt><dd>Frame strip, Duplicate, Onion skin, speed from 1 to 24 fps, Ping-pong loop</dd>
         <dt>Templates</dt><dd>55 animated samples (including 128×128, 256×256 and 512×512 scenes), 31 starter drawings and scenes, and 11 blank canvas sizes</dd>
-        <dt>Export</dt><dd>Animated GIF, video (MP4 or WebM), PNG and sprite sheet</dd>
-        <dt>Palette</dt><dd>47 colours, including skin tones and neon shades</dd>
+        <dt>Export</dt><dd>Animated GIF, video (MP4 or WebM), PNG, every frame as pictures in a ZIP, and sprite sheet — straight from the Studio or the Gallery</dd>
+        <dt>Palette</dt><dd>47 colours including skin tones and neon shades, plus up to 16 custom colours from the colour wheel or the colour roulette</dd>
         <dt>Shortcuts</dt><dd>B pencil · E eraser · G fill · I picker · L line · R box · C circle · S spray · T text · H pan · M mirror · O onion skin · N new frame · D duplicate · [ ] change frame · Space play · 1–5 brush size</dd>
       </dl>
       <p>Save finished work to your Gallery, open it again to keep editing, and download it to share.</p>
@@ -226,8 +227,13 @@
       <div data-o="palette" class="card inner stack section">
         <div class="row between"><p class="label">Palette</p><span class="inkname" id="inkName">Ink</span></div>
         <div class="palette" id="palette"></div>
-        <button class="linkbtn u-js-start" id="moreColours" aria-expanded="false">More colours (18) ▾</button>
+        <button class="linkbtn u-js-start" id="moreColours" aria-expanded="false">More colours (18) + custom ▾</button>
         <div class="palette" id="paletteMore" hidden></div>
+        <div class="custom-wrap" id="customWrap" hidden>
+          <div class="row between"><span class="minilabel">Custom colours <span class="meta" id="customCount">0 / 16</span></span><button class="linkbtn" id="editColour" hidden>Edit colour</button></div>
+          <div class="palette" id="paletteCustom"></div>
+          <p class="note">Tap + to pick any colour on the colour wheel, or spin the roulette. Custom colours are saved with this artwork.</p>
+        </div>
       </div>
       <div data-o="strip" class="card inner section">
         <p class="eyebrow u-fs15">Animation</p>
@@ -255,6 +261,17 @@
       <div data-o="save" class="section">
         <button class="btn orange block u-h70" id="saveBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></svg><span>Save art</span></button>
         <div class="savemeta"><span class="note" id="saveNote"></span><button class="linkbtn" id="newBtn">New art</button></div>
+      </div>
+      <div data-o="export" class="card inner stack section">
+        <div class="row between"><p class="label">Export</p><span class="meta">No need to save first</span></div>
+        <div class="grid2">
+          <button class="btn yellow" id="sxGif">GIF</button>
+          <button class="btn yellow" id="sxVid">Video</button>
+          <button class="btn" id="sxPng">PNG (this frame)</button>
+          <button class="btn" id="sxFrames">All frames (ZIP)</button>
+        </div>
+        <button class="btn block" id="sxSheet">Sprite sheet</button>
+        <label class="check"><input id="sxTransparent" type="checkbox"> <span>Transparent background for PNG, frames and sprite sheet</span></label>
       </div>
       <div data-o="transform" class="card inner stack section">
         <p class="label">Transform</p>
@@ -340,7 +357,7 @@
         <li><div><h3>Start blank or from a template</h3><p>Open the Templates tab and filter by Animated, Characters, Nature, Objects or Scenes, or pick a blank canvas size.</p></div></li>
         <li><div><h3>Pick a grid size</h3><p>8×8 suits tiny icons, 16×16 suits characters, 32×32 to 64×64 suit detailed scenes, and 128×128 up to 512×512 are for big pixel paintings. You can also type any custom size from 4 to 512.</p></div></li>
         <li><div><h3>Zoom in on big grids</h3><p>Use Zoom 2× to 16×, then ✋ Pan to move around. Bigger brushes (4, 8 or 16 px) fill large areas faster on 128×128 and up.</p></div></li>
-        <li><div><h3>Choose a colour and draw</h3><p>Tap a colour in the Palette, then tap or drag on the grid with the Pencil. Eraser removes pixels and Fill area paints a whole region at once.</p></div></li>
+        <li><div><h3>Choose a colour and draw</h3><p>Tap a colour in the Palette, then tap or drag on the grid with the Pencil. Eraser removes pixels and Fill area paints a whole region at once. Under More colours, tap + to pick any colour on the colour wheel or spin the 🎲 roulette.</p></div></li>
         <li><div><h3>Use the shape tools</h3><p>Line, Box, Circle and Filled draw shapes as you drag. Spray scatters pixels, Dither paints a checker pattern for shading, Replace swaps one colour for another everywhere, and Text stamps words in a pixel font (Brush size sets the letter size). Picker copies a colour, and Mirror drawing copies every stroke to the other side.</p></div></li>
         <li><div><h3>Made a mistake? Undo it</h3><p>Undo and Redo are in the Tools box. They also bring back frames you cleared or deleted.</p></div></li>
         <li><div><h3>Start from a picture</h3><p>Tap "Turn a picture into pixel art" and choose a photo. PIXTION shrinks it to your grid using the palette colours, and you can tidy it up by hand.</p></div></li>
@@ -349,7 +366,7 @@
         <li><div><h3>Turn on Onion skin</h3><p>The previous frame shows faintly behind the current one, so you can line up each step of the movement.</p></div></li>
         <li><div><h3>Play the preview</h3><p>Tap Play and adjust Speed. 6 to 10 frames per second suits most pixel animations. Ping-pong loop plays forward, then backward, which looks smooth for breathing and swinging.</p></div></li>
         <li><div><h3>Save your art</h3><p>Tap Save art and give it a title and an optional description. Open it later from the Gallery to play it or keep editing.</p></div></li>
-        <li><div><h3>Download and share</h3><p>In the Gallery, open a piece and choose GIF, video, PNG or sprite sheet. If you opened PIXTION from Messenger, open it in your browser first so the download works.</p></div></li>
+        <li><div><h3>Download and share</h3><p>Use Export in the Studio, or open a piece in the Gallery, and choose GIF, video, PNG, All frames (every frame as its own picture in a ZIP) or sprite sheet. If you opened PIXTION from Messenger, open it in your browser first so the download works.</p></div></li>
         <li><div><h3>Back up your gallery</h3><p>Your art lives in this browser. In Settings, tap "Back up my art" to save one file you can restore on any device.</p></div></li>
       </ol>
       <div class="card inner stack u-mt22"><p class="label u-fs15">Keyboard shortcuts</p><p class="note">B pencil · E eraser · G fill · I picker · L line · R box · C circle · S spray · T text · H pan · M mirror · O onion skin · N new frame · D duplicate · [ and ] change frame · Space play · 1 to 5 brush size · Ctrl+Z undo · Ctrl+Y redo</p></div>
@@ -387,8 +404,9 @@
       <button class="btn yellow" id="plVid">Download video</button>
       <button class="btn sm" id="plPng">PNG (this frame)</button>
       <button class="btn sm" id="plSheet">Sprite sheet</button>
+      <button class="btn sm" id="plFrames">All frames (ZIP)</button>
     </div>
-    <label class="check u-fs14"><input id="plTransparent" type="checkbox"> <span>Transparent background for PNG and sprite sheet</span></label>
+    <label class="check u-fs14"><input id="plTransparent" type="checkbox"> <span>Transparent background for PNG, frames and sprite sheet</span></label>
     <dl class="details" id="plDetails"></dl>
     <div class="grid2">
       <button class="btn teal" id="plEdit">Edit in Studio</button>
@@ -415,6 +433,23 @@
     <h3 id="cfTitle"></h3>
     <p id="cfBody" class="lede"></p>
     <div class="grid2"><button class="btn" id="cfOk"></button><button class="btn" id="cfNo">Cancel</button></div>
+  </div>
+</div>
+
+<!-- Custom colour wheel -->
+<div class="overlay" id="cwDlg" hidden>
+  <div class="card dialog" role="dialog" aria-modal="true" aria-labelledby="cwHead">
+    <p class="eyebrow">Custom colour</p>
+    <h3 id="cwHead">Add a custom colour</h3>
+    <div class="cw-wrap"><canvas id="cwWheel" width="480" height="480" aria-label="Colour wheel. Drag around the ring for the colour, towards the edge for a stronger colour."></canvas></div>
+    <div class="speed"><div class="row"><label class="label u-fs14" for="cwVal">Brightness</label><output id="cwValOut"></output></div><input id="cwVal" type="range" min="0" max="100"></div>
+    <div class="cw-row"><span class="cw-preview" id="cwPreview"></span><input id="cwHex" class="input" type="text" maxlength="7" autocomplete="off" spellcheck="false" aria-label="Hex colour code"></div>
+    <div class="grid2">
+      <button class="btn" id="cwSpin">🎲 Roulette</button>
+      <button class="btn orange" id="cwSave">Add colour</button>
+      <button class="btn pink" id="cwRemove" hidden>Remove</button>
+      <button class="btn" id="cwCancel">Cancel</button>
+    </div>
   </div>
 </div>
 

@@ -1,24 +1,24 @@
 /* PIXTION · views/player.js — the player dialog: playback, details, duplicate, delete and exports. */
 import { app } from '../shared.js';
 import { dec } from '../core/codec.js';
-import { $, $$, ask, esc, fmtDate, plural, slug, toast, uid } from '../core/dom.js';
+import { $, $$, ask, esc, fmtDate, plural, toast, uid } from '../core/dom.js';
 import { IAB } from '../core/env.js';
 import { seqOf } from '../core/frames.js';
-import { NAMES, PAL } from '../core/palette.js';
-import { drawPixels, paintFrame } from '../core/render.js';
+import { colorName, fullPalette } from '../core/palette.js';
+import { paintFrame, palette32 } from '../core/render.js';
 import { canVideo } from '../export/video.js';
 import { S, saveDraft, saveGallery } from '../state.js';
 import { openInStudio } from '../studio/save.js';
 import { stopGalleryAnim } from './cards.js';
-import { closeExport, exReady, exportGif, exportVideo, openExport } from './export-sheet.js';
+import { closeExport, exportFrames, exportGif, exportPng, exportSheet, exportVideo } from './export-sheet.js';
 import { renderGallery } from './gallery.js';
 import { tab } from './nav.js';
 
-const P = {item: null, frames: [], seq: [0], k: 0, i: 0, playing: false, fps: 8, t: null};
+const P = {item: null, pal: null, frames: [], seq: [0], k: 0, i: 0, playing: false, fps: 8, t: null};
 
 let plCanvas;
 
-function plDraw(){ paintFrame(plCanvas, P.frames[P.i], P.item.grid, Math.ceil(320 / P.item.grid)); $('#plFrame').textContent = `Frame ${P.i + 1} / ${P.frames.length}`; }
+function plDraw(){ paintFrame(plCanvas, P.frames[P.i], P.item.grid, Math.ceil(320 / P.item.grid), P.pal); $('#plFrame').textContent = `Frame ${P.i + 1} / ${P.frames.length}`; }
 
 function plSetPlay(on){
   P.playing = on; clearInterval(P.t);
@@ -31,7 +31,7 @@ function plSetPlay(on){
 export function openPlayer(id){
   const item = app.gallery.find(x => x.id === id); if (!item) return;
   stopGalleryAnim();
-  P.item = item; P.frames = item.frames.map(dec); P.seq = seqOf(P.frames.length, item.pingpong); P.k = 0; P.i = 0; P.fps = item.fps;
+  P.item = item; P.pal = palette32(item.custom); P.frames = item.frames.map(dec); P.seq = seqOf(P.frames.length, item.pingpong); P.k = 0; P.i = 0; P.fps = item.fps;
   $('#plTitle').textContent = item.title;
   $('#plInfo').textContent = `${item.grid}×${item.grid} · ${plural(P.frames.length, 'frame')}`;
   $('#plDesc').textContent = item.desc || ''; $('#plDesc').hidden = !item.desc;
@@ -43,8 +43,8 @@ export function openPlayer(id){
     <dt>Colours</dt><dd><span class="swatchrow" id="plSwatches"></span></dd>
     <dt>Created</dt><dd>${fmtDate(item.created)}</dd>
     <dt>Updated</dt><dd>${fmtDate(item.updated)}</dd>`;
-  const sw = $('#plSwatches');
-  [...used].sort((a, b) => a - b).forEach(v => { const i = document.createElement('i'); i.style.setProperty('--sw', PAL[v]); i.title = NAMES[v]; sw.append(i); });
+  const sw = $('#plSwatches'), hexes = fullPalette(item.custom);
+  [...used].sort((a, b) => a - b).forEach(v => { const i = document.createElement('i'); i.style.setProperty('--sw', hexes[v] || '#ffffff'); i.title = colorName(v); sw.append(i); });
   $('#plFps').value = P.fps; $('#plFpsOut').textContent = P.fps + ' fps';
   $$('.iab').forEach(b => b.hidden = !IAB);
   $('#plVid').disabled = !canVideo(); $('#plVid').title = canVideo() ? '' : 'This browser can’t record video. Use GIF.';
@@ -95,30 +95,9 @@ export function init() {
 
   $('#plVid').onclick = () => exportVideo(P.item, P.fps);
 
-  $('#plPng').onclick = () => {
-    const item = P.item, g = item.grid, scale = Math.max(1, Math.floor(480 / g)), i = P.i;
-    if (P.playing) plSetPlay(false);
-    openExport('Making your PNG…');
-    const cv = document.createElement('canvas');
-    if ($('#plTransparent').checked){ cv.width = cv.height = g * scale; drawPixels(cv.getContext('2d'), P.frames[i], g, scale); } else paintFrame(cv, P.frames[i], g, scale);
-    cv.toBlob(blob => {
-      if (!blob){ $('#exTitle').textContent = 'Couldn’t make the PNG'; $('#exHint').textContent = 'Try again.'; return; }
-      $('#exTitle').textContent = `Frame ${i + 1} as PNG`;
-      exReady(blob, `${slug(item.title)}-frame-${i + 1}.png`, '<img class="expimg" src="{url}" alt="PNG preview">', `${g * scale}×${g * scale} px picture of frame ${i + 1}. Pause on a different frame to save that one instead.`);
-    }, 'image/png');
-  };
+  $('#plPng').onclick = () => { if (P.playing) plSetPlay(false); exportPng(P.item, P.i, $('#plTransparent').checked); };
 
-  $('#plSheet').onclick = () => {
-    const item = P.item, g = item.grid, n = P.frames.length, scale = Math.max(1, Math.floor(256 / g)), W = g * scale;
-    openExport('Making your sprite sheet…');
-    const cols = Math.min(n, Math.max(1, Math.floor(8192 / W))), rows = Math.ceil(n / cols);
-    const cv = document.createElement('canvas'); cv.width = W * cols; cv.height = W * rows;
-    const ctx = cv.getContext('2d'); ctx.imageSmoothingEnabled = false; if (!$('#plTransparent').checked){ ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cv.width, cv.height); }
-    P.frames.forEach((f, i) => { ctx.save(); ctx.translate((i % cols) * W, Math.floor(i / cols) * W); drawPixels(ctx, f, g, scale); ctx.restore(); });
-    cv.toBlob(blob => {
-      if (!blob){ $('#exTitle').textContent = 'Couldn’t make the sprite sheet'; $('#exHint').textContent = 'Try again.'; return; }
-      $('#exTitle').textContent = 'Your sprite sheet is ready';
-      exReady(blob, `${slug(item.title)}-sprite-sheet.png`, '<img class="expimg u-maxw100" src="{url}" alt="Sprite sheet preview">', `${n} frames${rows > 1 ? ` in ${rows} rows` : ' side by side'}, each ${W}×${W} px. Game makers like Scratch, Godot and Unity can cut it back into frames.`);
-    }, 'image/png');
-  };
+  $('#plSheet').onclick = () => exportSheet(P.item, $('#plTransparent').checked);
+
+  $('#plFrames').onclick = () => { if (P.playing) plSetPlay(false); exportFrames(P.item, $('#plTransparent').checked); };
 }

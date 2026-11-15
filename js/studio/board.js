@@ -1,7 +1,7 @@
 /* PIXTION · studio/board.js — the drawing canvas: rendering, pointer input, panning and zoom. */
 import { app } from '../shared.js';
 import { $, $$, toast } from '../core/dom.js';
-import { NAMES } from '../core/palette.js';
+import { colorName } from '../core/palette.js';
 import { drawPixels } from '../core/render.js';
 import { S, settings } from '../state.js';
 import { pushUndo, updUndo } from './history.js';
@@ -66,7 +66,7 @@ export function init() {
     const c = cellAt(e); if (!c) return; e.preventDefault();
     if (S.tool === 'picker'){
       const v = S.frames[S.cur][c.y * S.grid + c.x];
-      if (v){ selColor(v); setTool('pencil'); toast(`Picked ${NAMES[v]}. Pencil is ready.`); }
+      if (v){ selColor(v); setTool('pencil'); toast(`Picked ${colorName(v)}. Pencil is ready.`); }
       else toast('That pixel is empty. Tap a coloured pixel.');
       return;
     }

@@ -20,3 +20,14 @@ hr.dash{border:0;border-top:2px dashed var(--gridline);margin:4px 0}
   .thumb canvas{width:96px;height:96px}
 }
 @media (prefers-reduced-motion:reduce){.btn{transition:none}}
+
+/* Colour wheel */
+.cw-wrap{display:grid;place-items:center}
+#cwWheel{width:min(280px,100%);height:auto;aspect-ratio:1;touch-action:none;cursor:crosshair;max-width:100%}
+.cw-row{display:flex;gap:10px;align-items:center}
+.cw-preview{flex:none;width:56px;height:56px;border:3px solid var(--ink);background:var(--sw,#fff)}
+.cw-row .input{min-height:56px;flex:1;min-width:0;font-family:var(--f-mono);font-size:17px;letter-spacing:.06em}
+
+/* All-frames preview */
+.frame-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.frame-grid canvas{width:56px;height:56px;image-rendering:pixelated;border:2px solid var(--ink);background:#fff}

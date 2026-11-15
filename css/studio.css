@@ -44,3 +44,9 @@ input[type=range]{width:100%;accent-color:var(--ink);height:28px}
 .thumb canvas{width:120px;height:120px;image-rendering:pixelated;border:1px solid var(--ink);background:var(--white);display:block}
 .thumb span{font-family:var(--f-mono);font-size:12px}
 .thumb[aria-pressed="true"]{background:var(--yellow)}
+
+/* Custom colours */
+.custom-wrap{display:grid;gap:12px;border-top:2px dashed var(--gridline);padding-top:14px}
+.sw-add{background:var(--card);border-style:dashed;font-family:var(--f-mono);font-weight:700;font-size:24px;line-height:1;color:var(--ink);display:grid;place-items:center}
+[data-o=export]{order:5}
+@media (min-width:980px){ [data-o=export]{order:5} }

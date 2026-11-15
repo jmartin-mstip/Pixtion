@@ -11,6 +11,8 @@ import { init as initStudioFramesUi } from './studio/frames-ui.js';
 import { init as initStudioHistory, updUndo } from './studio/history.js';
 import { init as initStudioImport } from './studio/import.js';
 import { init as initStudioPaletteUi } from './studio/palette-ui.js';
+import { init as initStudioColourWheel } from './studio/colour-wheel.js';
+import { init as initStudioExportUi } from './studio/export-ui.js';
 import { init as initStudioPlayback } from './studio/playback.js';
 import { init as initStudioSave } from './studio/save.js';
 import { init as initStudioShortcuts } from './studio/shortcuts.js';
@@ -43,6 +45,7 @@ initStudioHistory();
 initStudioShortcuts();
 initStudioTools();
 initStudioPaletteUi();
+initStudioColourWheel();
 initStudioFramesUi();
 initStudioImport();
 initStudioPlayback();
@@ -50,6 +53,7 @@ initStudioSave();
 initViewsGallery();
 initViewsPlayer();
 initViewsExportSheet();
+initStudioExportUi();
 
 // First screen
 updUndo();

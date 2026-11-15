@@ -128,9 +128,8 @@ Rebuild `dist/` after any change to the source, then redeploy it.
    - security headers for every page
 3. Every new commit redeploys automatically. You never have to build by hand.
 
-Name the project `pixtion` so the address is `pixtion.vercel.app` (the address written in
-`index.html`, `robots.txt` and `sitemap.xml`). If you use another address, replace
-`pixtion.vercel.app` in those three files.
+The site lives at `https://pixtionph.vercel.app`. That address is written in `index.html`,
+`robots.txt`, `sitemap.xml` and `scripts/obfuscate.mjs`; if it ever changes, update all four.
 
 Notes:
 - Keep `scripts/` in the repository. Vercel needs `scripts/obfuscate.mjs` to build.

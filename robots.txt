@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /scripts/
 
-Sitemap: https://pixtion.vercel.app/sitemap.xml
+Sitemap: https://pixtionph.vercel.app/sitemap.xml

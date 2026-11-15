@@ -4,7 +4,7 @@ import { dec } from '../core/codec.js';
 import { $, $$, esc, fmtDate, plural } from '../core/dom.js';
 import { IAB } from '../core/env.js';
 import { seqOf } from '../core/frames.js';
-import { thumbFrames } from '../core/render.js';
+import { palette32, thumbFrames } from '../core/render.js';
 import { openInStudio } from '../studio/save.js';
 import { animateCards, cardEl } from './cards.js';
 import { openPlayer } from './player.js';
@@ -24,8 +24,8 @@ export function renderGallery(){
   $('#gNone').hidden = !(app.gallery.length && !list.length);
   const cards = [];
   list.forEach(item => {
-    const frames = item.frames.map(dec), th = thumbFrames(frames, item.grid);
-    const el = cardEl({title: item.title, tag: item.example ? 'EXAMPLE' : '', grid: item.grid, fps: item.fps, frames, pf: th.frames, pg: th.grid,
+    const frames = item.frames.map(dec), th = thumbFrames(frames, item.grid), pal = palette32(item.custom);
+    const el = cardEl({title: item.title, tag: item.example ? 'EXAMPLE' : '', grid: item.grid, fps: item.fps, frames, pf: th.frames, pg: th.grid, pal,
       sub: `<p class="meta">${fmtDate(item.updated)}</p>${item.desc ? `<p class="desc">${esc(item.desc)}</p>` : ''}`},
       '<div class="row u-gap6"><button class="btn orange" data-a="play">Play</button><button class="btn" data-a="edit">Edit</button></div>');
     const cv = el.querySelector('canvas');
@@ -34,7 +34,7 @@ export function renderGallery(){
     cv.onkeydown = e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openPlayer(item.id); } };
     el.querySelector('[data-a=play]').onclick = () => openPlayer(item.id);
     el.querySelector('[data-a=edit]').onclick = () => openInStudio(item);
-    box.append(el); cards.push({cv, frames: th.frames, grid: th.grid, fps: item.fps, seq: seqOf(frames.length, item.pingpong), last: 0});
+    box.append(el); cards.push({cv, pal, frames: th.frames, grid: th.grid, fps: item.fps, seq: seqOf(frames.length, item.pingpong), last: 0});
   });
   animateCards(cards);
 }

@@ -23,6 +23,11 @@ export function validFrames(frames, grid){
     frames.every(f => typeof f === 'string' && f.length <= grid * grid * 2 && dec(f).length === grid * grid);
 }
 
+/** Up to 16 custom colours as lowercase #rrggbb. A bad entry becomes white so later colours keep their place. */
+export function cleanCustom(list){
+  return Array.isArray(list) ? list.slice(0, 16).map(c => typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c.toLowerCase() : '#ffffff') : [];
+}
+
 /** Returns a safe gallery item built only from known fields, or null if it isn't valid art. */
 export function cleanItem(it){
   if (!it || typeof it !== 'object' || Array.isArray(it)) return null;
@@ -35,6 +40,7 @@ export function cleanItem(it){
     desc: cleanText(it.desc, LIMITS.desc),
     artist: cleanText(it.artist, LIMITS.name),
     grid, frames: it.frames.slice(),
+    custom: cleanCustom(it.custom),
     fps: Math.round(num(it.fps, 1, 24, 8)),
     pingpong: it.pingpong === true,
     example: it.example === true,

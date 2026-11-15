@@ -1,7 +1,7 @@
 /* PIXTION · studio/tools.js — drawing tools: pencil, eraser, fill, line, box, circle, spray, dither, replace, mirror and brush size. */
 import { app } from '../shared.js';
 import { $, $$, toast } from '../core/dom.js';
-import { NAMES } from '../core/palette.js';
+import { colorName } from '../core/palette.js';
 import { S } from '../state.js';
 import { board, drawBoard } from './board.js';
 import { renderMeta } from './view.js';
@@ -54,7 +54,7 @@ export function replaceColour(c){
   if (t === v){ toast('That pixel is already the selected colour.'); return; }
   const frames = $('#tfAll').checked ? S.frames : [f];
   let n = 0; frames.forEach(fr => { for (let i = 0; i < fr.length; i++) if (fr[i] === t){ fr[i] = v; n++; } });
-  app.dirty = n > 0; toast(`Replaced ${n.toLocaleString()} ${t ? NAMES[t] : 'empty'} pixels with ${NAMES[v]}.`);
+  app.dirty = n > 0; toast(`Replaced ${n.toLocaleString()} ${t ? colorName(t) : 'empty'} pixels with ${colorName(v)}.`);
 }
 
 export function line(a, b){

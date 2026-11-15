@@ -1,7 +1,7 @@
 /* PIXTION · export/gif.js — GIF89a encoder (64-colour palette, LZW). */
 import { dec } from '../core/codec.js';
 import { seqOf } from '../core/frames.js';
-import { PAL } from '../core/palette.js';
+import { fullPalette } from '../core/palette.js';
 
 function lzw(px, minSize){
   const out = []; let cur = 0, bits = 0;
@@ -27,9 +27,10 @@ export function makeGif(item, fps, scale){
   const g = item.grid, W = g * scale, frames = item.frames.map(dec), b = [];
   const w16 = n => b.push(n & 255, (n >> 8) & 255);
   const str = s => { for (const c of s) b.push(c.charCodeAt(0)); };
+  const pal = fullPalette(item.custom);
   str('GIF89a'); w16(W); w16(W); b.push(0xF5, 0, 0);
   for (let i = 0; i < 64; i++){
-    const hex = i === 0 ? '#ffffff' : (PAL[i] || '#000000');
+    const hex = i === 0 ? '#ffffff' : (pal[i] || '#ffffff');
     b.push(parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16));
   }
   b.push(0x21, 0xFF, 0x0B); str('NETSCAPE2.0'); b.push(0x03, 0x01, 0, 0, 0);

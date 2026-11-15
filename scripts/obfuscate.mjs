@@ -18,7 +18,7 @@ import JsObfuscator from 'javascript-obfuscator';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..');
 const DIST = join(ROOT, 'dist');
-const SITE = 'https://pixtion.vercel.app';
+const SITE = 'https://pixtionph.vercel.app';
 
 const OBFUSCATE = {
   compact: true,
