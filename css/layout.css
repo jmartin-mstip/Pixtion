@@ -1,24 +1,57 @@
 /* PIXTION · layout.css — Responsive layout: one column on phones, two on wide screens. */
-/* Studio layout: one column on phones (flex + order), two columns from 980px. */
+/* Studio layout: one column on phones (flex + order); on tablets the canvas sits beside the panels;
+   on desktop a three-column workspace (tools · canvas + timeline · colours, preview and export) fits the screen. */
 .studio-grid{display:flex;flex-direction:column}
-.col-a,.col-b{display:contents}
-[data-o=board]{order:1}[data-o=hint]{order:2}[data-o=zoom]{order:3}[data-o=preview]{order:4}[data-o=save]{order:5}
-[data-o=tools]{order:6}[data-o=transform]{order:7}[data-o=size]{order:8}[data-o=palette]{order:9}[data-o=strip]{order:10}
+.col-l,.col-c,.col-r{display:contents}
+[data-o=board]{order:1}[data-o=mframes]{order:1}[data-o=hint]{order:2}[data-o=zoom]{order:3}[data-o=preview]{order:4}[data-o=save]{order:5}
+[data-o=tools]{order:6}[data-o=transform]{order:7}[data-o=size]{order:8}[data-o=palette]{order:9}[data-o=strip]{order:10}[data-o=export]{order:11}
 .ctlrow{display:grid;gap:8px}
 .card,.boardcard{max-width:100%}
 .screen{max-width:680px;margin-inline:auto}
-@media (min-width:980px){
+
+/* tablets: canvas on the left, panels on the right */
+@media (min-width:760px) and (max-width:1099px){
+  .wrap{max-width:1000px}
+  .studio-grid{display:grid;grid-template-columns:minmax(0,1fr) 310px;grid-template-areas:"c r" "c l";gap:0 28px;align-items:start}
+  .col-l,.col-c,.col-r{display:flex;flex-direction:column;min-width:0}
+  .col-c{grid-area:c;position:sticky;top:16px}
+  .col-r{grid-area:r}.col-l{grid-area:l}
+  .col-c [data-o=board],.col-c [data-o=mframes]{width:min(100%,calc(100vh - 380px),768px);min-width:320px;align-self:center}
+  .col-r > :first-child{margin-top:0}
+  .col-l [data-o],.col-r [data-o]{order:0}
+}
+
+/* desktop: three-column workspace that fits the window */
+@media (min-width:1100px){
   .wrap{max-width:1240px}
   #v-main > header{max-width:none}
-  .studio-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0 40px;align-items:start}
-  .col-a,.col-b{display:flex;flex-direction:column;min-width:0}
-  .col-a{position:sticky;top:16px}
-  .col-a .boardcard{width:min(100%,calc(100vh - 190px));align-self:center}
-  .col-b > :first-child{margin-top:0}
-  [data-o=tools]{order:1}[data-o=palette]{order:2}[data-o=strip]{order:3}[data-o=preview]{order:4}[data-o=save]{order:5}[data-o=transform]{order:6}[data-o=size]{order:7}
-  .pv{max-width:420px;margin-inline:auto}
+  .wrap:has(#p-studio:not([hidden])){max-width:1560px}
+  .studio-grid{display:grid;grid-template-columns:260px minmax(0,1fr) 340px;gap:0 30px;align-items:start}
+  .col-l,.col-c,.col-r{display:flex;flex-direction:column;min-width:0}
+  .col-l,.col-r{position:sticky;top:14px;max-height:calc(100vh - 28px);overflow-y:auto;overscroll-behavior:contain;
+    padding:0 10px 14px 0;scrollbar-width:thin;scrollbar-color:var(--ink) transparent}
+  .col-l > [data-o],.col-r > [data-o],.col-c > [data-o]{order:0}
+  .col-l > :first-child,.col-r > :first-child{margin-top:0}
+  .col-l .section,.col-r .section{margin-top:18px}
+  .col-c [data-o=board]{width:min(100%,calc(100vh - 290px),768px);min-width:360px;align-self:center}
+  .col-c [data-o=mframes]{width:min(100%,calc(100vh - 290px),768px);min-width:360px;align-self:center}
+  .col-c [data-o=hint]{margin-top:10px}
+  .col-l .card.inner,.col-r .card.inner{padding:18px}
+  .col-l .tools .btn{padding:8px 6px;font-size:12px}
+  .pv{max-width:100%;margin-inline:auto}
+
+  /* compact header while the studio is open: logo, tabs and home in one row */
+  #v-main:has(#p-studio:not([hidden])) .apphead{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:24px;padding:12px 18px}
+  #v-main:has(#p-studio:not([hidden])) .apphead > .row{display:contents}
+  #v-main:has(#p-studio:not([hidden])) .apphead .eyebrow{display:none}
+  #v-main:has(#p-studio:not([hidden])) .apphead .logo{font-size:30px;margin:0}
+  #v-main:has(#p-studio:not([hidden])) .apphead .homebtn{order:3}
+  #v-main:has(#p-studio:not([hidden])) .tabs{order:2;margin-top:0;max-width:640px}
+  #v-main:has(#p-studio:not([hidden])) .tab{min-height:44px}
+  #p-studio .titlebar{margin:18px 0 14px}
+  #p-studio .titlebar h2{font-size:22px}
 }
-@media (min-width:680px) and (max-width:979px){ .wrap{max-width:760px} }
+
 @media (max-width:520px){ .tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px} .seg.zoomseg{grid-auto-flow:row;grid-template-columns:repeat(3,minmax(0,1fr))} }
 @media (max-width:400px){ html .grid4, html .blanks{grid-template-columns:repeat(3,minmax(0,1fr))} }
 .tab{white-space:nowrap;min-width:0}

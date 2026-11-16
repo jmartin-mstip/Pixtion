@@ -65,7 +65,7 @@ export function init(){
 
   // panels below the canvas rise in as they scroll into view
   const rise = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); rise.unobserve(e.target); } }), { threshold: 0.12 });
-  document.querySelectorAll('#p-studio .col-a > [data-o]:not([data-o=board]):not([data-o=mframes]), #p-studio .col-b > [data-o]').forEach(el => { el.classList.add('rise'); rise.observe(el); });
+  if (phone.matches) document.querySelectorAll('#p-studio [data-o]:not([data-o=board]):not([data-o=mframes])').forEach(el => { el.classList.add('rise'); rise.observe(el); });
 
   addEventListener('scroll', () => { if (!ticking){ ticking = true; requestAnimationFrame(parallax); } }, { passive: true });
   new MutationObserver(() => { update(); parallax(); }).observe($('#p-studio'), { attributes: true, attributeFilter: ['hidden'] });

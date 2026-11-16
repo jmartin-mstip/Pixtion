@@ -173,36 +173,7 @@
       </div>
 
       <div class="studio-grid">
-        <div class="col-a">
-      <div data-o="board" class="boardcard"><div class="boardscroll" id="boardScroll"><canvas id="board" aria-label="Drawing grid"></canvas></div></div>
-      <div data-o="mframes" class="mtl">
-        <div class="mtl-row">
-          <button class="btn teal mtl-play" id="mfPlay" data-proxy="#playBtn" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg></button>
-          <div class="mtl-frames" id="mtlFrames" aria-label="Frames"></div>
-          <button class="btn orange mtl-act" data-proxy="#fAdd" aria-label="Add frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M12 5v14M5 12h14"/></svg></button>
-        </div>
-        <div class="mtl-foot">
-          <span class="mtl-cap">Frame <b id="mfLabel">1 / 1</b></span>
-          <span class="mtl-tools">
-            <button class="linkbtn" data-proxy="#fDup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="8" y="8" width="12" height="12"/><path d="M4 16V4h12"/></svg>Copy</button>
-            <button class="linkbtn mtl-del" id="mfDel" data-proxy="#fDel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Delete</button>
-          </span>
-        </div>
-      </div>
-      <p data-o="hint" class="hint">Tap or drag to draw. Choose Fill, then tap a colour region.</p>
-      <div data-o="zoom" class="ctlrow u-mt14">
-        <span class="minilabel">Zoom</span>
-        <div class="seg zoomseg">
-          <button class="btn" data-zoom="1" aria-pressed="true">1×</button>
-          <button class="btn" data-zoom="2" aria-pressed="false">2×</button>
-          <button class="btn" data-zoom="4" aria-pressed="false">4×</button>
-          <button class="btn" data-zoom="8" aria-pressed="false">8×</button>
-          <button class="btn" data-zoom="16" aria-pressed="false">16×</button>
-          <button class="btn" data-tool="pan" aria-pressed="false" title="Drag to move around a zoomed canvas">✋ Pan</button>
-        </div>
-      </div>
-        </div>
-        <div class="col-b">
+        <div class="col-l">
       <div data-o="tools" class="card inner stack section">
         <p class="label">Tools</p>
         <div class="grid2 tools">
@@ -239,55 +210,6 @@
           <button class="btn" id="redoBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 14l5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg>Redo</button>
         </div>
       </div>
-      <div data-o="palette" class="card inner stack section">
-        <div class="row between"><p class="label">Palette</p><span class="inkname" id="inkName">Ink</span></div>
-        <div class="palette" id="palette"></div>
-        <button class="linkbtn u-js-start" id="moreColours" aria-expanded="false">More colours (18) + custom ▾</button>
-        <div class="palette" id="paletteMore" hidden></div>
-        <div class="custom-wrap" id="customWrap" hidden>
-          <div class="row between"><span class="minilabel">Custom colours <span class="meta" id="customCount">0 / 16</span></span><button class="linkbtn" id="editColour" hidden>Edit colour</button></div>
-          <div class="palette" id="paletteCustom"></div>
-          <p class="note">Tap + to pick any colour on the colour wheel, or spin the roulette. Custom colours are saved with this artwork.</p>
-        </div>
-      </div>
-      <div data-o="strip" class="card inner section">
-        <p class="eyebrow u-fs15">Animation</p>
-        <h3 class="u-fs20 u-mb20">Frame strip</h3>
-        <div class="fbar">
-          <button class="btn sq" id="fPrev" aria-label="Previous frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
-          <button class="btn sq" id="fNext" aria-label="Next frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
-          <button class="btn orange" id="fAdd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add frame</button>
-          <button class="btn" id="fDup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"/><path d="M4 16V4h12"/></svg>Duplicate</button>
-          <button class="btn pink" id="fClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>Clear</button>
-          <button class="btn" id="fRev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>Reverse</button>
-          <button class="btn" id="fDel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>Delete frame</button>
-        </div>
-        <div class="strip" id="strip"></div>
-      </div>
-      <div data-o="preview" class="card inner stack section">
-        <p class="label">Preview</p>
-        <canvas id="pv" class="pv" aria-label="Animation preview"></canvas>
-        <button class="btn orange block u-h70" id="playBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"/></svg><span>Play</span></button>
-        <button class="btn block u-h70" id="onionBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>Onion skin</button>
-        <div class="speed"><div class="row"><label class="label u-fs14" for="fps">Speed</label><output id="fpsOut"></output></div><input id="fps" type="range" min="1" max="24"></div>
-        <button class="btn block" id="loopBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>Ping-pong loop</button>
-        <p class="note" id="pvInfo"></p>
-      </div>
-      <div data-o="save" class="section">
-        <button class="btn orange block u-h70" id="saveBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></svg><span>Save art</span></button>
-        <div class="savemeta"><span class="note" id="saveNote"></span><button class="linkbtn" id="newBtn">New art</button></div>
-      </div>
-      <div data-o="export" class="card inner stack section">
-        <div class="row between"><p class="label">Export</p><span class="meta">No need to save first</span></div>
-        <div class="grid2">
-          <button class="btn yellow" id="sxGif">GIF</button>
-          <button class="btn yellow" id="sxVid">Video</button>
-          <button class="btn" id="sxPng">PNG (this frame)</button>
-          <button class="btn" id="sxFrames">All frames (ZIP)</button>
-        </div>
-        <button class="btn block" id="sxSheet">Sprite sheet</button>
-        <label class="check"><input id="sxTransparent" type="checkbox"> <span>Transparent background for PNG, frames and sprite sheet</span></label>
-      </div>
       <div data-o="transform" class="card inner stack section">
         <p class="label">Transform</p>
         <div class="grid3">
@@ -321,6 +243,86 @@
         </div>
         <div class="inline"><input id="customSize" class="input" type="number" inputmode="numeric" min="4" max="512" placeholder="Custom size (4–512)"><button class="btn" id="customSizeBtn">Set</button></div>
         <p class="note">8×8 for tiny icons, 16×16 for characters, 32×32 and up for detailed scenes. Use Zoom and Brush size on big grids. Growing the grid keeps your drawing in the centre.</p>
+      </div>
+        </div>
+        <div class="col-c">
+      <div data-o="board" class="boardcard"><div class="boardscroll" id="boardScroll"><canvas id="board" aria-label="Drawing grid"></canvas></div></div>
+      <div data-o="mframes" class="mtl">
+        <div class="mtl-row">
+          <button class="btn teal mtl-play" id="mfPlay" data-proxy="#playBtn" aria-label="Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg></button>
+          <div class="mtl-frames" id="mtlFrames" aria-label="Frames"></div>
+          <button class="btn orange mtl-act" data-proxy="#fAdd" aria-label="Add frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M12 5v14M5 12h14"/></svg></button>
+        </div>
+        <div class="mtl-foot">
+          <span class="mtl-cap">Frame <b id="mfLabel">1 / 1</b></span>
+          <span class="mtl-tools">
+            <button class="linkbtn" data-proxy="#fDup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="8" y="8" width="12" height="12"/><path d="M4 16V4h12"/></svg>Copy</button>
+            <button class="linkbtn mtl-del" id="mfDel" data-proxy="#fDel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Delete</button>
+          </span>
+        </div>
+      </div>
+      <p data-o="hint" class="hint">Tap or drag to draw. Choose Fill, then tap a colour region.</p>
+      <div data-o="zoom" class="ctlrow u-mt14">
+        <span class="minilabel">Zoom</span>
+        <div class="seg zoomseg">
+          <button class="btn" data-zoom="1" aria-pressed="true">1×</button>
+          <button class="btn" data-zoom="2" aria-pressed="false">2×</button>
+          <button class="btn" data-zoom="4" aria-pressed="false">4×</button>
+          <button class="btn" data-zoom="8" aria-pressed="false">8×</button>
+          <button class="btn" data-zoom="16" aria-pressed="false">16×</button>
+          <button class="btn" data-tool="pan" aria-pressed="false" title="Drag to move around a zoomed canvas">✋ Pan</button>
+        </div>
+      </div>
+      <div data-o="strip" class="card inner section">
+        <p class="eyebrow u-fs15">Animation</p>
+        <h3 class="u-fs20 u-mb20">Frame strip</h3>
+        <div class="fbar">
+          <button class="btn sq" id="fPrev" aria-label="Previous frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <button class="btn sq" id="fNext" aria-label="Next frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></button>
+          <button class="btn orange" id="fAdd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add frame</button>
+          <button class="btn" id="fDup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="12" height="12"/><path d="M4 16V4h12"/></svg>Duplicate</button>
+          <button class="btn pink" id="fClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>Clear</button>
+          <button class="btn" id="fRev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>Reverse</button>
+          <button class="btn" id="fDel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>Delete frame</button>
+        </div>
+        <div class="strip" id="strip"></div>
+      </div>
+        </div>
+        <div class="col-r">
+      <div data-o="palette" class="card inner stack section">
+        <div class="row between"><p class="label">Palette</p><span class="inkname" id="inkName">Ink</span></div>
+        <div class="palette" id="palette"></div>
+        <button class="linkbtn u-js-start" id="moreColours" aria-expanded="false">More colours (18) + custom ▾</button>
+        <div class="palette" id="paletteMore" hidden></div>
+        <div class="custom-wrap" id="customWrap" hidden>
+          <div class="row between"><span class="minilabel">Custom colours <span class="meta" id="customCount">0 / 16</span></span><button class="linkbtn" id="editColour" hidden>Edit colour</button></div>
+          <div class="palette" id="paletteCustom"></div>
+          <p class="note">Tap + to pick any colour on the colour wheel, or spin the roulette. Custom colours are saved with this artwork.</p>
+        </div>
+      </div>
+      <div data-o="preview" class="card inner stack section">
+        <p class="label">Preview</p>
+        <canvas id="pv" class="pv" aria-label="Animation preview"></canvas>
+        <button class="btn orange block u-h70" id="playBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"/></svg><span>Play</span></button>
+        <button class="btn block u-h70" id="onionBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg>Onion skin</button>
+        <div class="speed"><div class="row"><label class="label u-fs14" for="fps">Speed</label><output id="fpsOut"></output></div><input id="fps" type="range" min="1" max="24"></div>
+        <button class="btn block" id="loopBtn" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>Ping-pong loop</button>
+        <p class="note" id="pvInfo"></p>
+      </div>
+      <div data-o="save" class="section">
+        <button class="btn orange block u-h70" id="saveBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h8V3M8 21v-7h8v7"/></svg><span>Save art</span></button>
+        <div class="savemeta"><span class="note" id="saveNote"></span><button class="linkbtn" id="newBtn">New art</button></div>
+      </div>
+      <div data-o="export" class="card inner stack section">
+        <div class="row between"><p class="label">Export</p><span class="meta">No need to save first</span></div>
+        <div class="grid2">
+          <button class="btn yellow" id="sxGif">GIF</button>
+          <button class="btn yellow" id="sxVid">Video</button>
+          <button class="btn" id="sxPng">PNG (this frame)</button>
+          <button class="btn" id="sxFrames">All frames (ZIP)</button>
+        </div>
+        <button class="btn block" id="sxSheet">Sprite sheet</button>
+        <label class="check"><input id="sxTransparent" type="checkbox"> <span>Transparent background for PNG, frames and sprite sheet</span></label>
       </div>
         </div>
       </div>
