@@ -1,5 +1,6 @@
 /* PIXTION · studio/board.js — the drawing canvas: rendering, pointer input, panning and zoom. */
 import { app } from '../shared.js';
+import { playing, stopPlay } from './playback.js';
 import { $, $$, toast } from '../core/dom.js';
 import { colorName } from '../core/palette.js';
 import { drawPixels } from '../core/render.js';
@@ -15,13 +16,14 @@ let bctx;
 
 function cellPx(g) { return g <= 64 ? Math.max(16, Math.round(640 / g)) : Math.max(2, Math.round(1024 / g)); }
 
-export function drawBoard(){
+/** Draws the canvas. Normally the frame being edited; during Play, the frame being shown. */
+export function drawBoard(i = S.cur){
   const g = S.grid, CELL = cellPx(g), size = g * CELL;
   if (board.width !== size){ board.width = size; board.height = size; }
   bctx.imageSmoothingEnabled = false;
   bctx.fillStyle = '#ffffff'; bctx.fillRect(0, 0, size, size);
-  if (S.onion && S.cur > 0) drawPixels(bctx, S.frames[S.cur - 1], g, CELL, .28);
-  drawPixels(bctx, S.frames[S.cur], g, CELL);
+  if (i === S.cur && S.onion && S.cur > 0) drawPixels(bctx, S.frames[S.cur - 1], g, CELL, .28);
+  drawPixels(bctx, S.frames[i] || S.frames[S.cur], g, CELL);
   if (settings.grid && CELL * S.zoom >= 6 && g <= 128){
     bctx.strokeStyle = '#dedede'; bctx.lineWidth = Math.max(1, CELL / 12); bctx.beginPath();
     for (let i = 1; i < g; i++){ bctx.moveTo(i * CELL, 0); bctx.lineTo(i * CELL, size); bctx.moveTo(0, i * CELL); bctx.lineTo(size, i * CELL); }
@@ -62,6 +64,7 @@ export function init() {
   scroller = $('#boardScroll');
 
   board.addEventListener('pointerdown', e => {
+    if (playing) stopPlay();
     if (S.tool === 'pan'){ e.preventDefault(); panning = {x: e.clientX, y: e.clientY, l: scroller.scrollLeft, t: scroller.scrollTop}; try { board.setPointerCapture(e.pointerId); } catch {} return; }
     const c = cellAt(e); if (!c) return; e.preventDefault();
     if (S.tool === 'picker'){

@@ -15,12 +15,14 @@ const STOP_ICON = '<rect x="6" y="5" width="12" height="14"/>';
 function startPlay(){
   playing = true; $('#playBtn span').textContent = 'Stop'; $('#playBtn svg').innerHTML = STOP_ICON;
   const seq = seqOf(S.frames.length, S.pingpong); playI = Math.max(0, seq.indexOf(S.cur));
-  clearInterval(playT); playT = setInterval(() => { playI = (playI + 1) % seq.length; drawPreview(seq[playI]); }, 1000 / S.fps);
+  const show = () => { const f = seq[playI]; drawPreview(f); drawBoard(f); const l = $('#mfLabel'); if (l) l.textContent = `${f + 1} / ${S.frames.length}`; };
+  clearInterval(playT); show(); playT = setInterval(() => { playI = (playI + 1) % seq.length; show(); }, 1000 / S.fps);
 }
 
 export function stopPlay(){
   if (!playing) return; playing = false; clearInterval(playT);
-  $('#playBtn span').textContent = 'Play'; $('#playBtn svg').innerHTML = PLAY_ICON; drawPreview();
+  $('#playBtn span').textContent = 'Play'; $('#playBtn svg').innerHTML = PLAY_ICON; drawPreview(); drawBoard();
+  const l = $('#mfLabel'); if (l) l.textContent = `${S.cur + 1} / ${S.frames.length}`;
 }
 
 /** Runs once at start-up, in the original order. */

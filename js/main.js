@@ -1,4 +1,6 @@
 /* PIXTION · main.js — entry point. Imports every module and starts them in order. */
+import { init as initStudioDock } from './studio/dock.js';
+import { init as initStudioWatch } from './studio/watch.js';
 import { app } from './shared.js';
 import { init as initCoreCodec } from './core/codec.js';
 import { init as initCoreDownloads } from './core/downloads.js';
@@ -54,6 +56,8 @@ initViewsGallery();
 initViewsPlayer();
 initViewsExportSheet();
 initStudioExportUi();
+initStudioDock();
+initStudioWatch();
 
 // First screen
 updUndo();
